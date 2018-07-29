@@ -29,8 +29,6 @@ async def get_movies_data():
             return await response.json()
 
 
-# can also implement etag headers and last modified headers
-
 @memoize
 def movies_list(request):
     loop = asyncio.new_event_loop()
