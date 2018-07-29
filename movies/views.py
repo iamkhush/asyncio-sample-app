@@ -33,7 +33,7 @@ async def get_movies_data():
 def movies_list(request):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    
+
     # fetch top 20 movies
     all_movies = loop.run_until_complete(get_movies_data())
 
@@ -43,7 +43,7 @@ def movies_list(request):
         for artist in movie['people']:
             if PEOPLE_PATTERN.search(artist):
                 all_people_urls.append(artist)
-    
+
     # fetch all peoples data
     artists_data = {}
     loop.run_until_complete(update_artists_data(all_people_urls, artists_data))

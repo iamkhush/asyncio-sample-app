@@ -11,7 +11,7 @@ class MoviesListTest(TestCase):
 
     async def artists_json_response(*args):
         return {'name': 'artist_name'}
-    
+
     async def test_update_artists_data(self):
         artists_data = {}
         response = mock.Mock()
@@ -28,7 +28,7 @@ class MoviesListTest(TestCase):
             },
             {
                 'name': 'Film example name2',
-                'people': ['http://example.com/people/']  
+                'people': ['http://example.com/people/']
             }
         ]
 
