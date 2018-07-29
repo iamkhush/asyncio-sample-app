@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movies Listing</title>
+</head>
+<body>
+<h2>Movies Listing with artists</h2>
+{% for movie in movies %}
+<table>
+    <tbody>
+        <tr>
+            <td>Title</td>
+            <td>{{movie.title}}</td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>{{movie.description}}</td>
+        </tr>
+        <tr>
+            <td>Director</td>
+            <td>{{movie.director}}</td>
+        </tr>
+        <tr>
+            <td>People</td>
+            <td>
+                <ul>
+                    {% for artist in movie.people_data %}
+                        <li>{{artist}}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<hr>
+{% endfor %}
+</body>
+</html>
