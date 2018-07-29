@@ -11,5 +11,6 @@ Tests uses asynctest (https://github.com/Martiusweb/asynctest/).
 A `Memoize` decorater caches the api call for 1 minute. Also `Cache-Control` has been set with max-age for 1 minute.
 
 ## Next interesting todos
+- Extend tests with test for memoize, movies_list with caching, error handling of both the apis in case they fail etc.
 - Pagination for results
 - Handling of Etag and last modified headers
