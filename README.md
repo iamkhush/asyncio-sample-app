@@ -1,5 +1,5 @@
 # asyncio-sample-app
-A sample app to test asyncio by hitting a rest service and writing test for it
+A sample app to test asyncio by requesting a REST service and writing test for it.
 
 ## Description
 The app exposes a url /movies/ which lists out top movies data using Ghibli's Api (https://ghibliapi.herokuapp.com/).
