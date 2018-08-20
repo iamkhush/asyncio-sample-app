@@ -1,3 +1,4 @@
+{% load movie_tags %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,8 +25,12 @@
             <td>People</td>
             <td>
                 <ul>
-                    {% for artist in movie.people_data %}
-                        <li>{{artist}}</li>
+                    {% for artist_url in movie.people %}
+                        <li> Name - {% get_artist_data artists artist_url "name" %} </li>
+                        <ul>
+                            <li> Age - {% get_artist_data artists artist_url "age" %} </li>
+                            <li> Gender - {% get_artist_data artists artist_url "gender" %} </li>
+                        </ul>
                     {% endfor %}
                 </ul>
             </td>
