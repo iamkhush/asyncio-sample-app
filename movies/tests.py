@@ -4,33 +4,36 @@ from django.test import Client
 from aiohttp.client import ClientResponse
 from asynctest import TestCase, patch, mock
 
-from .views import update_artists_data
+from .api_handler import get_all_artists_data
 
 
 class MoviesListTest(TestCase):
 
     async def artists_json_response(*args):
-        return {'name': 'artist_name'}
+        return { 'name': 'artist_name',
+                 'gender': 'Female',  'age': 10 }
 
-    async def test_update_artists_data(self):
-        artists_data = {}
-        response = mock.Mock()
-        response.json = self.artists_json_response
-        with patch("aiohttp.client.ClientSession._request", return_value=response) as patched:
-            await update_artists_data(['http://example.com'], artists_data)
-        assert artists_data == {'http://example.com': 'artist_name'}
-
-    async def film_json_response(*args, **kwargs):
+    async def film_json_response(*args):
         return [
-            {
-                'name': 'Film example name',
-                'people': ['http://example.com/people/ba924631-068e-4436-b6de-f3283fa848f0']
-            },
-            {
-                'name': 'Film example name2',
-                'people': ['http://example.com/people/']
-            }
-        ]
+        {
+            'name': 'Film example name',
+            'people': ['http://example.com/people/ba924631-068e-4436-b6de-f3283fa848f0']
+        },
+        {
+            'name': 'Film example name2',
+            'people': ['http://example.com/people/']
+        }
+    ]
+
+    async def test_get_all_artists_data(self):
+        artist_response = mock.Mock()
+        artist_response.json = self.artists_json_response
+        with patch("aiohttp.client.ClientSession._request", return_value=artist_response) as patched_resp:            
+            artists_data = await get_all_artists_data(await self.film_json_response())
+        assert artists_data == {
+            'http://example.com/people/ba924631-068e-4436-b6de-f3283fa848f0': 
+                {'name': 'artist_name', 'gender': 'Female', 'age': 10}}
+
 
     def test_get_movie_list(self):
         client = Client()
@@ -43,12 +46,13 @@ class MoviesListTest(TestCase):
             assert response.context['movies'] == [
                 {
                     'name': 'Film example name',
-                    'people': ['http://example.com/people/ba924631-068e-4436-b6de-f3283fa848f0'],
-                    'people_data': ['artist_name']
+                    'people': ['http://example.com/people/ba924631-068e-4436-b6de-f3283fa848f0']
                 },
                 {
                     'name': 'Film example name2',
-                    'people': ['http://example.com/people/'],
-                    'people_data': []
+                    'people': ['http://example.com/people/']
                 }
             ]
+            assert response.context['artists'] == {
+            'http://example.com/people/ba924631-068e-4436-b6de-f3283fa848f0': 
+                {'name': 'artist_name', 'gender': 'Female', 'age': 10}}
